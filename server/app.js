@@ -36,7 +36,11 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // render the error
   res.status(err.status || 500)
-    .json(err);
+    .json({
+      message: err.message,
+      status: err.status,
+      stack: process.env.NODE_ENV !== 'production' ? err.stack : undefined
+    });
 });
 
 module.exports = app;

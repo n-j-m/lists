@@ -12,7 +12,7 @@ function findOpts (opts) {
 
 module.exports = {
   index (req, res, next) {
-    List.scope('withUser').findAll({
+    List.scope('allAssoc').findAll({
       where: {
         user_id: req.user.id
       }
@@ -23,31 +23,41 @@ module.exports = {
   },
 
   show (req, res, next) {
-    List.find(findOpts({
+    List.scope('allAssoc').find({
       where: {
         id: req.params.id
       }
-    }))
+    })
+      .then(queryResultToJSON)
+      .then(respondWithData(res))
+      .catch(next);
+  },
+
+  addItem (req, res, next) {
+    ListItem.create(Object.assign(
+      req.body,
+      { list_id: req.params.id }
+    ))
       .then(queryResultToJSON)
       .then(respondWithData(res))
       .catch(next);
   },
 
   create (req, res, next) {
-    List.create(
+    List.scope('allAssoc').create(
       Object.assign(
         req.body, {
           user_id: req.user.id
-        }), findOpts({}))
+        }))
       .then(queryResultToJSON)
       .then(respondWithData(res))
       .catch(next);
   },
 
   update (req, res, next) {
-    List.update(req.body, findOpts({
+    List.scope('allAssoc').update(req.body, {
       where: { id: req.params.id }
-    }))
+    })
       .then(queryResultToJSON)
       .then(respondWithData(res))
       .catch(next);

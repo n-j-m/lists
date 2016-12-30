@@ -19,7 +19,11 @@ module.exports = function(sequelize, DataTypes) {
 
         List.addScope('withUser', {
           include: [{ model: models.User, as: 'user' }]
-        })
+        });
+
+        List.addScope('allAssoc', {
+          include: [{ model: models.User, as: 'user' }, { model: models.ListItem, as: 'items' }]
+        });
       }
     }
   });

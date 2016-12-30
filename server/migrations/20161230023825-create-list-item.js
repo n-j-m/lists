@@ -12,12 +12,14 @@ module.exports = {
         type: Sequelize.TEXT
       },
       complete: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       order: {
         type: Sequelize.INTEGER
       },
       list_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       created_at: {
