@@ -28,13 +28,28 @@ module.exports = function(sequelize, DataTypes) {
     },
   }, {
     underscored: true,
+    defaultScope: {
+      attributes: ['id', 'email', 'first_name', 'last_name', 'bio']
+    },
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        User.hasMany(models.List, {
+          as: 'lists',
+          onDelete: 'cascade'
+        });
+
+        User.addScope('withLists', {
+          include: [{ model: models.List, as: 'lists' }]
+        });
+
+        User.addScope('forVerification', {
+          attributes: ['id', 'email', 'password']
+        })
       },
 
       verify (email, password) {
-        return User.findOne({ where: { email } })
+        return User.scope('forVerification').findOne({ where: { email } })
           .then((user) => {
             if (!user) {
               return false;
