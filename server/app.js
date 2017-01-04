@@ -21,6 +21,7 @@ app.use(cookieParser());
 app.use(cors({
   origin: process.env.CORS_ORIGIN
 }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 initPassport(passport);
 initRoutes(app);

@@ -12,6 +12,9 @@ var app = require('../app');
 var debug = require('debug')('lists:server');
 var http = require('http');
 
+// socket io initialization
+const io = require('../socket');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -32,6 +35,9 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+// init socket.io
+io.attach(server);
 
 /**
  * Normalize a port into a number, string, or false.
