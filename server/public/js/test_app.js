@@ -25,15 +25,13 @@
     auth()
       .then((auth) => {
         console.log('auth:', auth);
-        const socket = io.connect('http://localhost:3001', {
-          query: 'token=' + auth.token.substr(4)
-        });
+        const socket = io.connect('http://localhost:3000');
 
-        socket.emit('authenticate', { token: auth.token })
+        socket.emit('authenticate', { token: auth.token.substr(4) })
           .on('authenticated', (data) => {
             console.log('authed:', data);
           })
-          .on('token', (data) => console.log('token', token))
+          .on('token', (data) => console.log('token', data))
           .on('unauthorized', (data) => console.log('unauthed:', data));
 
         socket.on('connected', (msg) => {

@@ -5,14 +5,16 @@ const server = require('../server');
 
 let sender = null, receiver = null;
 
+const url = `http://localhost:${process.env.PORT}`
+
 
 describe('Connection', () => {
 
   beforeEach((done) => {
     server.start();
 
-    sender = ioClient('http://localhost:3001');
-    receiver = ioClient('http://localhost:3001');
+    sender = ioClient(url);
+    receiver = ioClient(url);
     done();
   });
 
